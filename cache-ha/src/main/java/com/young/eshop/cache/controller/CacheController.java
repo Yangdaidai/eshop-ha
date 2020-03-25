@@ -1,6 +1,7 @@
 package com.young.eshop.cache.controller;
 
 import com.netflix.hystrix.HystrixCommand;
+import com.young.eshop.cache.hystrix.command.CityNameCommand;
 import com.young.eshop.cache.hystrix.command.ProductCommand;
 import com.young.eshop.cache.hystrix.command.ProductsCommand;
 import com.young.eshop.cache.model.Product;
@@ -70,6 +71,12 @@ public class CacheController {
         HystrixCommand<Product> productInfoCommand = new ProductCommand(id);
         //同步调用
         Product productInfo = productInfoCommand.execute();
+        Integer cityId = productInfo.getCityId();
+
+        //信号量隔离
+        CityNameCommand cityNameCommand = new CityNameCommand(cityId);
+        String cityName = cityNameCommand.execute();
+        productInfo.setCityName(cityName);
 
         //异步调用
 		/*Future<ProductInfo> future = productInfoCommand.queue();

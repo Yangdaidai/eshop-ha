@@ -1,7 +1,6 @@
 package com.young.eshop.cache.hystrix.command;
 
-import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.*;
 import com.young.eshop.cache.model.Product;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,7 +14,11 @@ public class ProductCommand extends HystrixCommand<Product> {
     private Integer productId;
 
     public ProductCommand(Integer productId) {
-        super(HystrixCommandGroupKey.Factory.asKey("ProductGroup"));
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ProductService"))
+                .andCommandKey(HystrixCommandKey.Factory.asKey("ProductInfoCommand"))
+                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("ProductInfoPool"))
+               .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(15).withQueueSizeRejectionThreshold(10))
+        );
         this.productId = productId;
     }
 
