@@ -1,6 +1,7 @@
 package com.young.eshop.cache.hystrix.command;
 
 import com.netflix.hystrix.*;
+import com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategyDefault;
 import com.young.eshop.cache.model.Product;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,13 +12,16 @@ import org.springframework.web.client.RestTemplate;
  */
 public class ProductCommand extends HystrixCommand<Product> {
 
+    public static final String PRODUCT_INFO = "product_info_";
     private Integer productId;
+    private static final HystrixCommandKey PRODUCT_COMMAND = HystrixCommandKey.Factory.asKey("ProductInfoCommand");
 
     public ProductCommand(Integer productId) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ProductService"))
                 .andCommandKey(HystrixCommandKey.Factory.asKey("ProductInfoCommand"))
                 .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("ProductInfoPool"))
-               .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(15).withQueueSizeRejectionThreshold(10))
+                //default : coreSize = 10   QueueSize= 5
+                .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(15).withQueueSizeRejectionThreshold(10))
         );
         this.productId = productId;
     }
@@ -30,4 +34,13 @@ public class ProductCommand extends HystrixCommand<Product> {
         return restTemplate.getForObject(url, Product.class, productId);
     }
 
+    @Override
+    protected String getCacheKey() {
+        return PRODUCT_INFO + productId;
+    }
+
+    public static void flushCache(int id) {
+        HystrixRequestCache.getInstance(PRODUCT_COMMAND,
+                HystrixConcurrencyStrategyDefault.getInstance()).clear(PRODUCT_INFO + id);
+    }
 }

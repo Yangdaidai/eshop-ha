@@ -54,17 +54,18 @@ public class CacheController {
         // 用restTemplate去调用商品服务的http接口
         String url = "http://127.0.0.1:8082/product/getProductInfo?id=" + productId;
         Product response = restTemplate.getForObject(url, Product.class, productId);
-        log.info("Product : {}",response);
+        log.info("Product : {}", response);
         return "success";
     }
 
     /**
      * nginx 开始，各级缓存都失效了，nginx发送很多的请求直接到缓存服务要求拉取最原始的数据
+     *
      * @param id 商品id
      * @return Product
      */
     @GetMapping("/getProductInfo/{id}")
-    public Product getProductInfo(@PathVariable  Integer id) {
+    public Product getProductInfo(@PathVariable Integer id) {
         // 拿到一个商品id
         // 调用商品服务的接口，获取商品id对应的商品的最新数据
         // 用HttpClient去调用商品服务的http接口
@@ -87,10 +88,11 @@ public class CacheController {
 			e.printStackTrace();
 		}*/
 
-        log.info("productInfo : {}",productInfo);
+        log.info("productInfo : {}", productInfo);
 
         return productInfo;
     }
+
     /**
      * 一次性批量查询多条商品数据的请求
      */
@@ -127,4 +129,24 @@ public class CacheController {
 
         return productList;
     }
+
+    /**
+     * 批量查询多条商品数据,进行请求的缓存
+     */
+    @RequestMapping("/getProductsWithCache")
+    public List<Product> getProductsWithCache(@RequestBody List<Integer> productIds) {
+        List<Product> products = new ArrayList<>();
+        productIds.forEach(id -> {
+            ProductCommand productCommand = new ProductCommand(id);
+            Product product = productCommand.execute();
+            boolean fromCache = productCommand.isResponseFromCache();
+            if(!fromCache)
+                products.add(product);
+            log.info("product is : {}", product);
+            log.info("isResponseFromCache : {}", fromCache);
+        });
+
+        return products;
+    }
+
 }

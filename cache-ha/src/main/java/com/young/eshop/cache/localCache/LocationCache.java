@@ -9,6 +9,7 @@ public class LocationCache {
 	
 	static {
 		cityMap.put(11000, "北京");
+		cityMap.put(31000, "上海");
 	}
 	
 	public static String getCityName(Integer cityId) {
