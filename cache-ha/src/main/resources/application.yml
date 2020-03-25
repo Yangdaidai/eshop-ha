@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: cache-ha
+  profiles:
+    active: dev
+
