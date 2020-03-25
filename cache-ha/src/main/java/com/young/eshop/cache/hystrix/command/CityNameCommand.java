@@ -4,7 +4,7 @@ import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.HystrixCommandProperties.ExecutionIsolationStrategy;
-import com.young.eshop.cache.localCache.LocationCache;
+import com.young.eshop.cache.localcache.LocationCache;
 import lombok.extern.slf4j.Slf4j;
 
 /**

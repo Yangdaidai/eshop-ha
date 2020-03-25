@@ -1,5 +1,4 @@
 ${AnsiColor.BRIGHT_RED} spring-boot.version : ${spring-boot.formatted-version}
-${AnsiColor.BRIGHT_RED} application.formatted-version : ${application.formatted-version}
 ${AnsiColor.BRIGHT_YELLOW}
 ////////////////////////////////////////////////////////////////////
 //                          _ooOoo_                               //

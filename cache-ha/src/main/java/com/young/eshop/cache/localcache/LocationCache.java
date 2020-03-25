@@ -1,4 +1,4 @@
-package com.young.eshop.cache.localCache;
+package com.young.eshop.cache.localcache;
 
 import java.util.HashMap;
 import java.util.Map;
