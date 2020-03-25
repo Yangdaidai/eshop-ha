@@ -1,2 +1,4 @@
 # eshop-ha
-hystrix
+*  Hystrix
+*  Hystrix Dashboard
+*  Turbine Stream
