@@ -6,6 +6,7 @@ import com.young.eshop.product.ha.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Copyright © 2020 YOUNG. All rights reserved.
@@ -27,5 +28,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProduct(Integer id) {
         return productMapper.selectOne(id);
+    }
+
+    @Override
+    public List<Product> getProducts(List<Integer> productIds) {
+
+        return productMapper.selectList(productIds);
     }
 }

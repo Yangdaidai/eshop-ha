@@ -2,6 +2,8 @@ package com.young.eshop.product.ha.service;
 
 import com.young.eshop.product.ha.model.Product;
 
+import java.util.List;
+
 /**
  * Copyright © 2020 YOUNG. All rights reserved.
  *
@@ -15,4 +17,6 @@ import com.young.eshop.product.ha.model.Product;
  **/
 public interface ProductService {
     Product getProduct(Integer id);
+
+    List<Product> getProducts(List<Integer> productIds);
 }

@@ -4,6 +4,7 @@ import com.netflix.hystrix.HystrixCommand;
 import com.young.eshop.cache.hystrix.command.CityNameCommand;
 import com.young.eshop.cache.hystrix.command.ProductCommand;
 import com.young.eshop.cache.hystrix.command.ProductsCommand;
+import com.young.eshop.cache.hystrix.command.collapser.ProductsCollapser;
 import com.young.eshop.cache.model.Product;
 import com.young.eshop.cache.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 
 /**
@@ -147,6 +149,23 @@ public class CacheController {
         });
 
         return products;
+    }
+
+    @RequestMapping("/getProducts")
+    public List<Product> getProducts(@RequestBody List<Integer> productIds) {
+
+        List<Product> productList = new ArrayList<>();
+
+        productIds.forEach(productId -> {
+            ProductsCollapser productsCollapser = new ProductsCollapser(restTemplate, productId);
+            try {
+                productList.add(productsCollapser.queue().get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+        List<Product> resultList = productList.stream().distinct().collect(Collectors.toList());
+        return resultList;
     }
 
 }
