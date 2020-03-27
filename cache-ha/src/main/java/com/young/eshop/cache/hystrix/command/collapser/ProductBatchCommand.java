@@ -28,12 +28,12 @@ import java.util.Objects;
  * @Version 1.0.0
  **/
 @Slf4j
-public class BatchCommand extends HystrixCommand<List<Product>> {
+public class ProductBatchCommand extends HystrixCommand<List<Product>> {
 
     public List<Integer> idList;
     public RestTemplate restTemplate;
 
-    public BatchCommand(RestTemplate restTemplate, List<Integer> idList) {
+    public ProductBatchCommand(RestTemplate restTemplate, List<Integer> idList) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("ProductService"))
                 .andCommandKey(HystrixCommandKey.Factory.asKey("ProductsCollapser")));
         this.idList = idList;

@@ -39,7 +39,7 @@ public class ProductsCollapser extends HystrixCollapser<List<Product>, Product, 
         });
         log.info("createCommand method invoke, params= {}" , idList);
 
-        return new BatchCommand(restTemplate,idList);
+        return new ProductBatchCommand(restTemplate,idList);
     }
 
     @Override
