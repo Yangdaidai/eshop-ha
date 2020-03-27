@@ -1,4 +1,5 @@
 rootProject.name = 'eshop-ha'
 include 'cache-ha'
 include 'product-ha'
+include 'turbine'
 

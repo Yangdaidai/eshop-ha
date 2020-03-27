@@ -15,10 +15,10 @@ spring:
       connection-test-query:  select 'x' from dual
 
 
+
 #mybatis相关配置
 mybatis:
   type-aliases-package:  com.young.eshop.product.ha.model
-
   mapper-locations: classpath:com/young/eshop/product/ha/mapper/mapping/*Mapper.xml
 
 

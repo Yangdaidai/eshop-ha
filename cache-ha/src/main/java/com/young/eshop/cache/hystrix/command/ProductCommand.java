@@ -25,7 +25,13 @@ public class ProductCommand extends HystrixCommand<Product> {
                         .andCommandKey(HystrixCommandKey.Factory.asKey("ProductInfoCommand"))
                         .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("ProductInfoPool"))
                         //default : coreSize = 10   QueueSize= 5
-                        .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(15).withQueueSizeRejectionThreshold(10))
+                        .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter()
+                                .withCoreSize(15)
+                                .withQueueSizeRejectionThreshold(10)
+                                 .withMaximumSize(20)
+                                .withKeepAliveTimeMinutes(2)
+                                .withAllowMaximumSizeToDivergeFromCoreSize(true)
+                        )
 //                .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
 //                        .withCircuitBreakerRequestVolumeThreshold(30)
 //                        .withCircuitBreakerErrorThresholdPercentage(40)
@@ -38,7 +44,7 @@ public class ProductCommand extends HystrixCommand<Product> {
 
     @Override
     protected Product run() {
-     //  int a= 1/0; 出现异常,如果复写了getFallback() 会进行 fallback
+        //  int a= 1/0; 出现异常,如果复写了getFallback() 会进行 fallback
         String url = "http://127.0.0.1:8082/product/getProductInfo?productId=" + productId;
         RestTemplate restTemplate = new RestTemplate();
 
