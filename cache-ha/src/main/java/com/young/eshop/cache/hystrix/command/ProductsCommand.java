@@ -8,7 +8,6 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,8 +34,8 @@ public class ProductsCommand extends HystrixObservableCommand<List<Product>> {
                 Objects.requireNonNull(productIds, "productIds be not null!");
 				List<Product> products = new ArrayList<>();
 				productIds.forEach(productId -> {
-                    String url = "http://127.0.0.1:8082/product/getProductInfo?productId=" + productId;
-                    Product product = restTemplate.getForObject(url, Product.class, productId);
+                    String url = "http://127.0.0.1:8082/product/getProductInfo?productId" + productId;
+                    Product product = restTemplate.getForObject(url, Product.class);
                     products.add(product);
                 });
                 observer.onNext(products);

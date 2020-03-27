@@ -42,7 +42,7 @@ public class ProductCommand extends HystrixCommand<Product> {
         String url = "http://127.0.0.1:8082/product/getProductInfo?productId=" + productId;
         RestTemplate restTemplate = new RestTemplate();
 
-        return restTemplate.getForObject(url, Product.class, productId);
+        return restTemplate.getForObject(url, Product.class);
     }
 
     @Override
